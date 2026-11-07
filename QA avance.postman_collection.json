@@ -1,0 +1,430 @@
+{
+  "info": {
+    "_postman_id": "b38fa14c-d966-4683-bf7e-c877f5aeddeb",
+    "name": "QA avance",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "49821151",
+    "_collection_link": "https://go.postman.co/collection/49821151-b38fa14c-d966-4683-bf7e-c877f5aeddeb?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "smoke",
+      "item": [
+        {
+          "name": "get ping echo",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"status is 200\",function(){",
+                  "    pm.response.to.have.status(200)     ",
+                  "})",
+                  "",
+                  "",
+                  "pm.test(\"url est correct\",function(){",
+                  "    const response = pm.response.json()",
+                  "    const salle = pm.collectionVariables.get(\"salle\")",
+                  "    pm.expect(response.url).to.eql(\"https://postman-echo.com/get?salle=\" +salle)",
+                  "})",
+                  "",
+                  "pm.test(\"salle vaut A101 dans args\", function () {",
+                  "    const reponse = pm.response.json()",
+                  "    const salle = pm.collectionVariables.get(\"salle\")",
+                  "    pm.expect(reponse.args.salle).to.eql(salle)",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/get?salle={{salle}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "get"
+              ],
+              "query": [
+                {
+                  "key": "salle",
+                  "value": "{{salle}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "GET bearer sans token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"status est 401\",function(){",
+                  "    pm.response.to.have.status(401)",
+                  "})",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://httpbin.org/bearer",
+              "protocol": "https",
+              "host": [
+                "httpbin",
+                "org"
+              ],
+              "path": [
+                "bearer"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST login simule",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"status is 200\",function(){",
+                  "    pm.response.to.have.status(200)",
+                  "})",
+                  "",
+                  "",
+                  "pm.collectionVariables.set(\"token\",pm.response.json().json.token)",
+                  "",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"token\":\"qa-from-login\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/post",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "post"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET bearer avec token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"status est 200\",function(){",
+                  "    pm.response.to.have.status(200)",
+                  "})",
+                  "",
+                  "",
+                  "pm.test(\"authenticated is true\",function(){",
+                  "    const reponse = pm.response.json().authenticated",
+                  "    pm.expect(reponse).to.eql(true)",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://httpbin.org/bearer",
+              "protocol": "https",
+              "host": [
+                "httpbin",
+                "org"
+              ],
+              "path": [
+                "bearer"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "verbes",
+      "item": [
+        {
+          "name": "PUT echo",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"salle: A101 is present\",function(){",
+                  "    const result= pm.response.json().data.salle",
+                  "    pm.expect(result).to.eql(\"A101\")",
+                  "})",
+                  "",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"salle\": \"A101\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/put",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "put"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH echo",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"status is 200\",function(){",
+                  "    pm.response.to.have.status(200)",
+                  "})",
+                  "",
+                  "pm.test(\"salle : B202 is present\",function(){",
+                  "    const result = pm.response.json().json.salle",
+                  "    pm.expect(result).to.eql(\"B202\")",
+                  "})",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"salle\": \"B202\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/patch",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "patch"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE echo",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// verifier Status",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"salle\": \"A101\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/delete",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "delete"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "salle",
+      "value": ""
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "value": ""
+    }
+  ]
+}
