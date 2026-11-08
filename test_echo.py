@@ -10,7 +10,7 @@ HEADER_AUTORISATION = {"Authorization": "Bearer qa-token-1"}
 
 def test_get_echo_200():
     requete = requests.get(f"{URL}/get")
-    assert requete.status_code == 200
+    assert requete.status_code == 999
     assert requete.json()["url"] == f"{URL}/get"
 
 
