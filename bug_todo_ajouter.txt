@@ -1,0 +1,26 @@
+titre : créer une tâche — elle ne s’affiche pas, liste vide
+------------------------------------------------------------
+
+QA : Choukri
+date : 10/11/2026
+
+environnement:
+--------------
+macOS, Chrome, Playwright, pytest, test_ihm_todo.py
+URL : https://demo.playwright.dev/todomvc
+
+Étapes pour reproduire:
+------------------------
+- Ouvrir Chrome / https://demo.playwright.dev/todomvc
+- Saisir une tâche "acheter du lait"
+- Appuyer sur Entrée
+- Regarder la liste
+
+attendu = la tâche "acheter du lait" est dans la liste
+obtenu = liste vide
+-----------------------------------------------------------------------
+
+impact : impossibilité d’ajouter une tâche
+
+sévérité : bloquante
+priorité : haute
