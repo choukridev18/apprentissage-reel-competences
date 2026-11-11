@@ -4,7 +4,7 @@ Portfolio QA — **Choukri**
 
 API (Postman, pytest) · IHM (Playwright + Page Object) · SQL · JMeter · GitHub Actions (CI/CD)
 
-Page déployée : [choukridev18.github.io/apprentissage-reel-competences](https://choukridev18.github.io/apprentissage-reel-competences/)
+Page déployée : [choukridev18.github.io/qa-campagnes](https://choukridev18.github.io/qa-campagnes/)
 
 ## Ce que j’ai testé
 
